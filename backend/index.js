@@ -1,12 +1,14 @@
+require('dotenv').config();
 const sequelize = require("./config/database");
 const app = require("./server.js");
 const PORT = process.env.PORT || 5050;
 
-// Initialisierung Datenbank
+// Initialisierung Datenbank mit "alter: true"
+// Das sorgt dafür, dass Sequelize das User-Model mit den neuen Feldern in XAMPP abgleicht
 sequelize
-  .sync()
+  .sync({ alter: true }) 
   .then(() => {
-    console.log("Datenbankverbindung wurde erfolgreich hergestellt!");
+    console.log("Datenbankverbindung wurde erfolgreich hergestellt und Tabellen aktualisiert!");
   })
   .catch((err) => {
     console.error("Fehler beim Verbinden mit der Datenbank:", err);

@@ -1,12 +1,14 @@
 const Sequelize = require("sequelize");
-require("dotenv").config();
 
-const { DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
-
-// Datenbankverbindung konfigurieren:
-const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
-  host: "localhost",
-  dialect: "mysql",
+const sequelize = new Sequelize('defaultdb', 'avnadmin', 'AVNS_1w1n3moZZZdrLjYXXyX', {
+  host: 'dbs-pennergame-pennergame.l.aivencloud.com',
+  port: 22194,
+  dialect: 'mysql',
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  }
 });
 
 module.exports = sequelize;
