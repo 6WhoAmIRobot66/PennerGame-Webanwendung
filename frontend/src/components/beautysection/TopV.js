@@ -1,32 +1,32 @@
 import React from "react";
-import "../../App";
-import { Button } from "../buttons/Button";
 import "./TopV.css";
+import { Button } from "../buttons/Button";
+import bgImage from "./reeperbahn_hintergrund.jpg"; // Hier das Bild importieren
 
 function eyecatch() {
   return (
-    <div className="eyecatch-container">
-      <video src="videos/world.mp4" autoPlay loop muted />
-      <h1>Ready?</h1>
-      <p>Test your knowledge...</p>
-      <div className="eyecatch-btns">
-        <Button
-          path="/quiz"
-          className="btns"
-          buttonStyle="btn--outline"
-          buttonSize="btn--large"
-        >
-          Lets go!
-        </Button>
+    <div 
+      className="eyecatch-container" 
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className="paper-overlay">
+        <div className="content-box">
+          <h1 className="landing-title">PENNERGAME.DE</h1>
+          <p className="landing-subtitle">Das Original aus Hamburg-St. Pauli</p>
+          
+          <div className="landing-text">
+            <p>Werde vom Flaschensammler zum Schlossbesitzer. Schnapp dir deinen Hund, such im Müll nach Brauchbarem und gründe deine eigene Bande!</p>
+          </div>
 
-        <Button
-          className="btns"
-          buttonStyle="btn--primary"
-          buttonSize="btn--large"
-          path="/dashboard"
-        >
-          Dashboard <i className="far fa-play-circle" />
-        </Button>
+          <div className="eyecatch-btns">
+            <Button path="/register" buttonStyle="btn--primary" buttonSize="btn--large">
+              JETZT KOSTENLOS SPIELEN
+            </Button>
+            <Button path="/login" buttonStyle="btn--outline" buttonSize="btn--large">
+              LOGIN
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

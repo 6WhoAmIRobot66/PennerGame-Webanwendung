@@ -1,8 +1,10 @@
 import React from "react";
+import LandingPage from "./landingpage/LandingPage.js
+
 import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./components/pages/Home";
+import LandingPage from "./components/pages/Home";
 import QuizFrame from "./components/pages/quizcon/SuperQuiz";
 import Sandbox from "./components/pages/Sandbox";
 import { SignUp } from "./components/pages/SignUp";
