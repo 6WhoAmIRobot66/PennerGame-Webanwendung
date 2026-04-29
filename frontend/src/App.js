@@ -1,8 +1,9 @@
 import React from "react";
+// Import von LandingPage löschen, wenn du sie nicht willst
 import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./components/pages/Home";
+import Home from "./components/pages/Home"; // Home wieder normal importieren
 import QuizFrame from "./components/pages/quizcon/SuperQuiz";
 import Sandbox from "./components/pages/Sandbox";
 import { SignUp } from "./components/pages/SignUp";
@@ -15,7 +16,6 @@ import HTMLPage from "./components/pages/HtmlPage";
 import JavaScriptPage from "./components/pages/JavaScriptPage";
 import PythonPage from "./components/pages/PythonPage";
 import Team from "./components/pages/TeamPage";
-// import HighscoreBoard from "./Pages/Highscore/highscore";
 
 function App() {
   return (
@@ -24,6 +24,7 @@ function App() {
         <AuthProvider>
           <Navbar />
           <Routes>
+            {/* Hier wird jetzt direkt Home geladen */}
             <Route exact path="/" element={<Home />} />
             <Route path="/quiz" element={<QuizFrame />} />
             <Route path="/sandbox" element={<Sandbox />} />
@@ -35,7 +36,6 @@ function App() {
             <Route path="/javascriptpage" element={<JavaScriptPage />} />
             <Route path="/pythonpage" element={<PythonPage />} />
             <Route path="/teampage" element={<Team />} />
-            {/* <Route path="/highscore" element={<HighscoreBoard />} /> */}
           </Routes>
           <Footer />
         </AuthProvider>

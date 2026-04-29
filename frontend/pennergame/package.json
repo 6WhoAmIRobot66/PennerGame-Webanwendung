@@ -1,0 +1,46 @@
+{
+  "name": "pennergame",
+  "version": "0.0.1",
+  "description": "javascript package",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint-staged": "lint-staged",
+    "prepare": "husky install",
+    "dev": "rollup -w -c rollup.config.js --environment MODE:dev",
+    "build": "rollup -c rollup.config.js --environment MODE:prod"
+  },
+  "keywords": [
+    "ts",
+    "js",
+    "package"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.6.7",
+    "@geektech/commitlint-config": "^0.0.2",
+    "prettier": "^3.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@types/node": "^20.4.5",
+    "rollup": "^3.27.0",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "tslib": "^2.6.1",
+    "typescript": "^5.1.6",
+    "eslint": "^8.36.0",
+    "@geektech/eslint-plugin": "^1.1.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue,css,less,json,md}": [
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  }
+}

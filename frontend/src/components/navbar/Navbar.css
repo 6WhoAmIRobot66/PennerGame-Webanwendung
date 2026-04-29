@@ -1,0 +1,93 @@
+.Navbar {
+  background: #1a1a1a;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 3px solid #3d2b1f; /* Brauner Rand */
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: 90%;
+  max-width: 1300px;
+}
+
+.navbar-logo {
+  color: #f1c40f; /* Pennergame Gold */
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 900;
+  text-shadow: 2px 2px 0px #000;
+}
+
+/* Neue In-Game Stats Anzeige */
+.nav-ingame-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+  background: #262626;
+  padding: 5px 15px;
+  border: 1px dashed #555;
+}
+
+.stat-money { color: #2ecc71; }
+.stat-caps { color: #f1c40f; }
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  text-align: center;
+}
+
+.nav-links {
+  color: #ccc;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.nav-links:hover {
+  color: #f1c40f;
+  background: #333;
+  transition: all 0.2s ease-out;
+}
+
+.nav-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.pg-logout-btn {
+  background: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.pg-logout-btn:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* Mobile Fixes */
+@media screen and (max-width: 960px) {
+  .nav-menu {
+    background: #1a1a1a;
+    border-top: 1px solid #3d2b1f;
+  }
+  .nav-ingame-stats { display: none; } /* Auf Mobile ausblenden für Platz */
+}
