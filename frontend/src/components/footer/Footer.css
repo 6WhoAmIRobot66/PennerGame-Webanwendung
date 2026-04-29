@@ -1,0 +1,51 @@
+.footer-container {
+  background-color: #242424;
+  padding: 15px 0; /* Sehr schmaler Footer */
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center; /* Zentriert den gesamten Inhalt */
+  align-items: center;
+  gap: 40px; /* Abstand zwischen Copyright und Links */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.website-rights {
+  color: #888; /* Etwas dezenteres Grau */
+  font-size: 14px;
+}
+
+.footer-links-row {
+  display: flex;
+  gap: 20px; /* Abstand zwischen den einzelnen Links */
+}
+
+.footer-links-row a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.footer-links-row a:hover {
+  color: #27ae60; /* Ein schöner Akzent beim Drüberfahren */
+}
+
+/* Mobile Optimierung: Falls der Platz nicht reicht, wird es kompakt */
+@media screen and (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .footer-links-row {
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

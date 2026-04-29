@@ -1,0 +1,80 @@
+video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+}
+
+.eyecatch-container {
+  background: url("../../images/backround.jpg") center center/cover no-repeat;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+}
+
+/* --- DAS BILD: Minimal größer auf 850px --- */
+.eyecatch-center-img {
+  max-width: 850px; /* Der neue "Sweet Spot" */
+  width: 90%;       
+  height: auto;
+  margin-bottom: 30px; 
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.5));
+  z-index: 1;
+}
+
+.eyecatch-container > h1 {
+  color: #fff;
+  font-size: 100px;
+  margin-top: -60px; /* Weniger negativer Margin, damit es nicht im Bild klebt */
+  z-index: 1;
+}
+
+.eyecatch-container > p {
+  margin-top: 8px;
+  color: #fff;
+  font-size: 32px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  z-index: 1;
+}
+
+.eyecatch-btns {
+  margin-top: 20px;
+  z-index: 1;
+}
+
+.eyecatch-btns .btn {
+  margin: 8px;
+}
+
+/* Media Queries für die optimierte Größe */
+@media screen and (max-width: 960px) {
+  .eyecatch-container > h1 {
+    font-size: 70px;
+    margin-top: -80px;
+  }
+  
+  .eyecatch-center-img {
+    max-width: 550px; 
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .eyecatch-container > h1 {
+    font-size: 50px;
+  }
+
+  .eyecatch-center-img {
+    max-width: 400px; 
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
