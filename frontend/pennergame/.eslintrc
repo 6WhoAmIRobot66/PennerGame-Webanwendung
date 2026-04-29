@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "plugin:@geektech/recommended-ts"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module"
+  }
+}
