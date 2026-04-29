@@ -1,35 +1,20 @@
 import React from "react";
 import "../../App";
-import { Button } from "../buttons/Button";
-import "./TopV.css";
+import "./TopV.css"; // Der Button-Import wurde hier gelöscht
 
-function eyecatch() {
+function TopV() {
   return (
     <div className="eyecatch-container">
-      <video src="videos/world.mp4" autoPlay loop muted />
-      <h1>Ready?</h1>
-      <p>Test your knowledge...</p>
-      <div className="eyecatch-btns">
-        <Button
-          path="/quiz"
-          className="btns"
-          buttonStyle="btn--outline"
-          buttonSize="btn--large"
-        >
-          Lets go!
-        </Button>
-
-        <Button
-          className="btns"
-          buttonStyle="btn--primary"
-          buttonSize="btn--large"
-          path="/dashboard"
-        >
-          Dashboard <i className="far fa-play-circle" />
-        </Button>
-      </div>
+      {/* Nur noch das Bild in der Mitte */}
+      <img 
+        src="/pictures/zettel.png" 
+        className="eyecatch-center-img" 
+        alt="Zettel" 
+      />
+      
+      {/* Der eyecatch-btns Bereich wurde komplett entfernt */}
     </div>
   );
 }
 
-export default eyecatch;
+export default TopV;

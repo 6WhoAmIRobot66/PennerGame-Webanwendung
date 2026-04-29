@@ -33,55 +33,41 @@ function Navbar() {
       <nav className="Navbar">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-            TechSmarter
-            <i className="fa-solid fa-seedling" />
+            {/* Pfad auf .webp angepasst */}
+            <img 
+              src="/pictures/logo.png" 
+              alt="TechSmarter Logo" 
+              className="navbar-logo-img" 
+            />
           </Link>
+
           <div className="menu-icon" onClick={handleClick}>
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/quiz" className="nav-links" onClick={closeMobileMenu}>
-                Quiz
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/sandbox"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                Wissen
-              </Link>
-            </li>
             <li className="nav-item">
               <Link
                 to="/sign-up"
                 className="nav-links-mobile"
                 onClick={closeMobileMenu}
               >
-                Sign Up
+                Registrieren
               </Link>
             </li>
           </ul>
           {button && !user && (
             <Button buttonStyle="btn--outline" path="/sign-in">
-              SIGN IN
+              Einloggen
             </Button>
           )}
           {button && !user && (
             <Button buttonStyle="btn--outline" path="/sign-up">
-              SIGN UP
+              Registrieren
             </Button>
           )}
           {button && user && (
             <Button onClick={handleLogout} buttonStyle="btn--outline" path="/">
-              Logout
+              Abmelden
             </Button>
           )}
           {user && (

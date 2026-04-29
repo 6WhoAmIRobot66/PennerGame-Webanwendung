@@ -1,5 +1,5 @@
 .navbar {
-  background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+  background: linear-gradient(D1C8BD);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -158,3 +158,16 @@
     transition: 250ms;
   }
 }
+
+.navbar-logo-img {
+  height: 80px; /* Oder die Höhe deiner Navbar entsprechend */
+  width: auto;  /* Behält das Seitenverhältnis bei */
+  display: flex;
+  align-items: center;
+  margin-top: 5px; /* Falls es noch etwas zentriert werden muss */
+}
+
+/* Falls du das alte Icon noch im CSS gestylt hast, kannst du 
+   .fa-seedling dort entfernen oder auskommentieren. */
+
+   
