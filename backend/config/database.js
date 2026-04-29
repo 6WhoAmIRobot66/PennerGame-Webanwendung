@@ -1,14 +1,20 @@
 const Sequelize = require("sequelize");
+require("dotenv").config();
 
-const sequelize = new Sequelize('defaultdb', 'avnadmin', 'AVNS_1w1n3moZZZdrLjYXXyX', {
-  host: 'dbs-pennergame-pennergame.l.aivencloud.com',
-  port: 22194,
-  dialect: 'mysql',
-  dialectOptions: {
-    ssl: {
-      rejectUnauthorized: false
+const sequelize = new Sequelize(
+  process.env.DB_NAME, 
+  process.env.DB_USER, 
+  process.env.DB_PASSWORD, 
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: "mysql",
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false 
+      }
     }
   }
-});
+);
 
 module.exports = sequelize;
