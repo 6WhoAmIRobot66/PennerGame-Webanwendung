@@ -1,18 +1,15 @@
-const User = require("../models/Users");
+const { User } = require("../models"); // Wir nutzen den zentralen Import
 
-// Funktion zum Hinzufügen von Punkten zu einem Benutzer
+// --- DEINE BESTEHENDE LOGIK ---
 const addPoints = async (req, res) => {
   const { username, points } = req.query;
   try {
-    // Finde den Benutzer in der Datenbank
     const user = await User.findOne({ where: { username } });
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
-    // Füge die Punkte zum Benutzer hinzu
-    const currentPoints = parseInt(user.points);
-    const newPoints = currentPoints + parseInt(points);
-    user.points = newPoints;
+    const currentPoints = parseInt(user.points) || 0;
+    user.points = currentPoints + parseInt(points);
     await user.save();
     res.json({ message: "Punkte erfolgreich hinzugefügt" });
   } catch (error) {
@@ -21,22 +18,16 @@ const addPoints = async (req, res) => {
   }
 };
 
-// Funktion zum Subtrahieren von Punkten von einem Benutzer
 const subtractPoints = async (req, res) => {
   const { username, points } = req.body;
   try {
-    // Finde den Benutzer in der Datenbank
     const user = await User.findOne({ where: { username } });
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
-    // Überprüfe, ob genügend Punkte vorhanden sind
     if (user.points < points) {
-      return res
-        .status(400)
-        .json({ message: "Nicht genügend Punkte vorhanden" });
+      return res.status(400).json({ message: "Nicht genügend Punkte vorhanden" });
     }
-    // Subtrahiere die Punkte vom Benutzer
     user.points -= points;
     await user.save();
     res.json({ message: "Punkte erfolgreich abgezogen" });
@@ -46,7 +37,28 @@ const subtractPoints = async (req, res) => {
   }
 };
 
+// --- NEUE PENNERGAME LOGIK FÜR DIE NAVBAR ---
+const getNavbarData = async (req, res) => {
+  try {
+    // Wir holen fest den ersten User (ID 1) für die Anzeige
+    const user = await User.findByPk(1); 
+    if (!user) {
+      return res.status(404).json({ message: "TestPenner nicht gefunden" });
+    }
+    res.json({
+      username: user.username,
+      money: user.money,
+      bottles: user.bottles,
+      points: user.points
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Fehler beim Laden der Navbar-Daten" });
+  }
+};
+
+// Alles zusammen exportieren
 module.exports = {
   addPoints,
   subtractPoints,
+  getNavbarData, // Neu hinzugefügt
 };
