@@ -40,6 +40,8 @@
 
 .stat-money { color: #2ecc71; }
 .stat-caps { color: #f1c40f; }
+.stat-points { color: #3498db; } /* Ein schönes Blau für die Erfahrung/Punkte */
+
 
 .nav-menu {
   display: flex;

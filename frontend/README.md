@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# 🍺 TechSmarter Frontend - Pennergame Edition
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dieses Frontend ist das Gesicht der TechSmarter-Anwendung. Es wurde mit **React.js** entwickelt und bietet eine interaktive Oberfläche für die Pennergame-Simulation sowie die Lern-Quizzes.
 
-## Available Scripts
+## 🚀 Schnellstart
 
-In the project directory, you can run:
+Um das Frontend lokal zu starten:
+
+1.  **Abhängigkeiten installieren:**
+    ```bash
+    npm install
+    ```
+2.  **Anwendung starten:**
+    ```bash
+    npm start
+    ```
+    Die App öffnet sich automatisch unter [http://localhost:3000](http://localhost:3000).
+
+## 🔌 API-Anbindung
+
+Das Frontend kommuniziert mit dem Express-Backend. Die Konfiguration findest du unter `src/api/config/api.js`.
+*   **Backend-URL:** `http://localhost:5001` (Default)
+*   **Features:** Automatisches Laden der Navbar-Stats (Geld, Flaschen) nach dem Login.
+
+## 🛠 Verfügbare Skripte
+
+Im Projektverzeichnis kannst du folgende Befehle ausführen:
 
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Startet die App im Entwicklungsmodus. Bei Code-Änderungen lädt die Seite automatisch neu.
 
 ### `npm run build`
+Erstellt die App für die Produktion im Ordner `build`. Der Build ist optimiert und bereit für das Deployment.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm test`
+Startet den Test-Runner für Unit-Tests.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📁 Wichtige Komponenten
+*   **Navbar:** Zeigt die Live-Daten (Geld, Flaschen, Punkte) aus der Aiven-Cloud an.
+*   **AuthProvider:** Verwaltet den Login-Status und speichert JWT-Tokens im LocalStorage.
+*   **Dashboard:** Deine Übersicht über Skills und Fortschritt.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+**Hinweis:** Stelle sicher, dass das Backend läuft, bevor du dich einloggst, da sonst keine Spieldaten geladen werden können.
