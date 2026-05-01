@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "Ot!sRIP2",
+    "password": null,
     "database": "database_name",
     "host": "localhost",
     "dialect": "mysql"
