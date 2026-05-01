@@ -1,3 +1,51 @@
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../config/database");
+
+// const User = sequelize.define("User", {
+//   id: {
+//     type: DataTypes.INTEGER,
+//     primaryKey: true,
+//     autoIncrement: true,
+//     allowNull: false,
+//   },
+//   username: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   email: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//     unique: true,
+//   },
+//   password: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   // Das alte "points" können wir als "Punktzahl/Ranking" behalten
+//   points: {
+//     type: DataTypes.INTEGER,
+//     defaultValue: 0,
+//   },
+//   // --- NEU FÜR PENNERGAME ---
+//   money: {
+//     type: DataTypes.DECIMAL(15, 2), // Für Beträge wie 344.319,51
+//     defaultValue: 0.00,
+//   },
+//   bottles: {
+//     type: DataTypes.INTEGER, // Pfandflaschen
+//     defaultValue: 0,
+//   },
+//   caps: {
+//     type: DataTypes.INTEGER, // Kronkorken
+//     defaultValue: 0,
+//   },
+//   level: {
+//     type: DataTypes.INTEGER,
+//     defaultValue: 1,
+//   }
+// });
+
+// module.exports = User;
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
@@ -21,28 +69,33 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  // Das alte "points" können wir als "Punktzahl/Ranking" behalten
   points: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
   },
-  // --- NEU FÜR PENNERGAME ---
+  // --- PENNERGAME MECHANIK ---
   money: {
-    type: DataTypes.DECIMAL(15, 2), // Für Beträge wie 344.319,51
-    defaultValue: 0.00,
+    type: DataTypes.DECIMAL(15, 2),
+    defaultValue: 10.00, // Startkapital
+  },
+  max_money: {
+    type: DataTypes.DECIMAL(15, 2),
+    defaultValue: 20.00, // Becher-Limit
   },
   bottles: {
-    type: DataTypes.INTEGER, // Pfandflaschen
-    defaultValue: 0,
-  },
-  caps: {
-    type: DataTypes.INTEGER, // Kronkorken
-    defaultValue: 0,
-  },
-  level: {
     type: DataTypes.INTEGER,
-    defaultValue: 1,
+    defaultValue: 0,
+  },
+  // Skills aus deinem Text
+  att: { type: DataTypes.INTEGER, defaultValue: 1 },
+  def: { type: DataTypes.INTEGER, defaultValue: 1 },
+  dex: { type: DataTypes.INTEGER, defaultValue: 1 },
+  // Zeitstempel für das Flaschensammeln (10 Min Check)
+  last_collect: {
+    type: DataTypes.DATE,
+    allowNull: true,
   }
 });
 
 module.exports = User;
+
