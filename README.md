@@ -1,6 +1,6 @@
-# "TechSmarter" Webanwendung - Pennergame Edition
+# "Pennergame" Webanwendung - Penner Edition
 
-TechSmarter ist eine interaktive Fullstack-Webanwendung, die im Kern als moderne Neuinterpretation des Klassikers "Pennergame" entwickelt wird. Sie kombiniert spielerische RPG-Elemente mit technischem Wissen und einer modernen Systemarchitektur.
+Pennergame ist eine interaktive Fullstack-Webanwendung, die im Kern als moderne Neuinterpretation des Klassikers "Pennergame Sylt" entwickelt wird. Sie kombiniert spielerische RPG-Elemente mit technischem Wissen und einer modernen Systemarchitektur.
 
 ## 🚀 Features
 
