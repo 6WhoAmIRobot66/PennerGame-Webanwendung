@@ -4,13 +4,13 @@ import { Button } from "../buttons/Button";
 import "./Navbar.css";
 import { useAuth } from "../../api/auth/AuthProvider";
 import Avatar from "@mui/material/Avatar";
-import axios from "axios"; // Neu für den API-Aufruf
+import axios from "axios";
 
 function Navbar() {
   const { user, handleLogout } = useAuth();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  
+
   // Neuer State für die Live-Stats aus Aiven
   const [pennerStats, setPennerStats] = useState({ money: "0.00", bottles: 0, points: 0 });
 
@@ -83,9 +83,9 @@ function Navbar() {
           )}
           {user && (
             <div className="nav-user-info">
-              <Avatar 
-                alt={pennerStats.username || "Penner"} 
-                src="/pictures/hacker.png" 
+              <Avatar
+                alt={pennerStats.username || "Penner"}
+                src="/pictures/penner01.png"
                 sx={{ border: '2px solid #f1c40f', width: 35, height: 35 }}
               />
               {button && (

@@ -9,8 +9,8 @@ router.get('/create-test-user', async (req, res) => {
         const hashedPassword = await bcrypt.hash("123", 10);
 
         const user = await User.create({
-            username: "TestPenner",
-            email: "test@penner.de",
+            username: "TestPenner01",
+            email: "testpenner@hamburg.de",
             password: hashedPassword, // Verschlüsselt speichern
             money: 10.00,
             max_money: 20.00,
@@ -23,7 +23,7 @@ router.get('/create-test-user', async (req, res) => {
         res.json({ msg: "Test-User mit verschlüsseltem Passwort erstellt!", user });
     } catch (err) {
         // Falls der User schon existiert, Fehlermeldung schöner machen
-        res.status(500).json({ error: "Fehler beim Erstellen (User existiert evtl. schon?): " + err.message });
+        res.status(500).json({ error: "Fehler beim Erstellen (User existiert schon): " + err.message });
     }
 });
 
