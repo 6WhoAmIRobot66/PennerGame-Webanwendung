@@ -2,36 +2,38 @@ const User = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const jwtSecret = process.env.JWT_SECRET;
+
+// FIX: Fallback hinzugefügt, damit jwt.sign nicht abstürzt, wenn das Secret fehlt
+const jwtSecret = process.env.JWT_SECRET || "pennergame_fallback_secret_123";
 
 exports.registerUser = async (req, res) => {
+  console.log("--- REGISTRIERUNGS-VERSUCH ---", req.body);
   try {
-    // Extract user data from request body
-    const { firstName, lastName, email, password, allowExtraEmails } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
-    // Check if user with the same email already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
     const newUser = await User.create({
       username: firstName + lastName,
       email,
       password: hashedPassword,
+      money: 10.00,
+      max_money: 20.00,
+      bottles: 0,
+      dex: 1
     });
 
-    // Generate JWT token
     const token = jwt.sign(
       { userId: newUser.id, email: newUser.email },
       jwtSecret
     );
 
-    res.status(201).json({ message: "User registered successfully", token });
+    res.status(201).json({ message: "User registered successfully", token, user: newUser });
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -39,26 +41,30 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+  console.log("--- LOGIN-VERSUCH EMPFANGEN ---");
+  console.log("Daten vom Frontend:", req.body);
+
   try {
-    // Extract email and password from request body
     const { email, password } = req.body;
 
-    // Find user by email
     const user = await User.findOne({ where: { email } });
-    console.log("Hallo von Login!", user, email, password);
+
     if (!user) {
+      console.log("Login gescheitert: Email nicht gefunden ->", email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Passwörter vergleichen:
     const passwordMatch = await bcrypt.compare(password, user.password);
+
     if (!passwordMatch) {
+      console.log("Login gescheitert: Passwort falsch für ->", email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // JWT-Token generieren:
+    // Erfolg: Token erstellen
     const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret);
-    console.log("Login erfolgreich!", user);
+
+    console.log("LOGIN ERFOLGREICH für:", user.username);
 
     res.json({ user, token });
   } catch (error) {
