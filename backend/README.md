@@ -1,36 +1,37 @@
+
 # Express-App Dokumentation - Freitag, 1. Mai 2026 (Pennergame-Upgrade)
 
 Heute haben wir die Anwendung grundlegend transformiert, von einer lokalen CRUD-App zu einer cloud-basierten Spieleplattform (Pennergame-Remake).
 
-## 1. Cloud-Migration & Datenbank-Infrastruktur:
+## 1. Cloud-Migration & Infrastruktur
 * **Aiven Cloud Integration:** Umstellung der Datenbank von lokalem XAMPP auf Aiven MySQL Cloud.
 * **SSL-Verschlüsselung:** Implementierung von SSL-Verbindungen in Sequelize (`rejectUnauthorized: false`), um den Sicherheitsanforderungen von Cloud-Datenbanken gerecht zu werden.
-* **IP-Routing:** Fix für macOS DNS-Probleme durch direkte Host-Auflösung (Verbindung via IP `142.93.234.47` auf Port `22194`).
+* **IP-Routing:** Fix für macOS DNS-Probleme durch direkte Host-Auflösung via IP `142.93.234.47` auf Port `22194`.
+* **Port-Management:** Wechsel des Backend-Ports auf **5001**, da Port 5000 durch macOS-Systemdienste blockiert war.
 
-## 2. Spielmechanik & Erweitertes Datenmodell:
-* **User-Model Update:** Das `Users.js`-Model wurde um essentielle Pennergame-Attribute erweitert:
+## 2. Spielmechanik & Erweitertes Datenmodell
+* **User-Model Evolution:** Das `Users.js`-Model wurde um essentielle Pennergame-Attribute erweitert:
     * `money` & `max_money`: Kapitalverwaltung mit integriertem Becher-Limit.
     * `bottles`: Pfandflaschen-System.
     * `att`, `def`, `dex`: Skill-System für Angriffe, Verteidigung und Geschicklichkeit.
     * `last_collect`: Zeitstempel für die 10-Minuten-Sammel-Logik.
 
-## 3. Backend-Refactoring & API-Sicherheit:
-* **CORS-Dynamik:** Implementierung einer dynamischen CORS-Middleware in der `server.js`, die zwischen Development (`localhost:3000`) und Production unterscheidet.
-* **Middleware-Optimierung:** Reorganisation der `server.js`, um sicherzustellen, dass Body-Parser vor den Routen geladen werden.
-* **JWT-Sicherheit:** Behebung von Abstürzen durch Einführung eines `JWT_SECRET`-Fallbacks im `authController.js`.
-* **Fix-Routes:** Erstellung temporärer Routen zur Verschlüsselung bestehender Test-Datenbestände (Migration von Klartext-Passwörtern zu Bcrypt-Hashes).
+## 3. API-Sicherheit & Authentication
+* **CORS-Dynamik:** Implementierung einer dynamischen CORS-Middleware, die zwischen Development (`localhost:3000`) und Production unterscheidet.
+* **JWT-Fix:** Behebung von Login-Abstürzen durch Einführung eines `JWT_SECRET`-Fallbacks im `authController.js`.
+* **Migration-Script:** Erstellung einer `fixRoutes.js`, um bestehende Test-Datenbestände von Klartext-Passwörtern auf sichere Bcrypt-Hashes zu migrieren.
 
-## 4. Frontend & Live-Daten:
-* **Navbar-Integration:** Umbau der React-Navbar zur Anzeige von Echtzeit-Daten aus der Aiven-Cloud mittels Axios.
-* **Auth-Synchronisation:** Verknüpfung der `useAuth`-Logik mit den neuen Cloud-Statistiken (Geld, Flaschen, Punkte).
+## 4. Frontend-Anbindung
+* **Navbar-Synchronisation:** Umbau der React-Navbar zur Anzeige von Echtzeit-Daten (Geld, Flaschen, Punkte) direkt aus der Aiven-Cloud mittels Axios.
+* **Auth-Check:** Verknüpfung der `useAuth`-Logik mit den neuen Cloud-Statistiken.
 
-## 5. Gelöste Probleme & Bugfixes:
-* **EADDRINUSE:** Port-Konflikt auf Port 5000 gelöst durch Umstellung des Backend-Servers auf **Port 5001**.
-* **JSON Syntax-Error:** Fix in der `config.json` und `models/index.js` durch Entfernen unzulässiger Kommentare.
-* **Module Not Found:** Korrektur von Import-Fehlern in der zentralen `routes/index.js`.
+## Welche Probleme sind aufgetreten / Lösungsansätze?
+* **Problem:** "Cannot find module"-Fehler beim Serverstart. 
+  * **Lösung:** Synchronisation der Dateinamen in `routes/index.js` (Korrektur von `fixRoute` zu `fixRoutes`).
+* **Problem:** Safari verweigerte "sichere Verbindung" zu localhost. 
+  * **Lösung:** Explizite Nutzung von `http://127.0.0.1` und Bereinigung doppelter CORS-Middlewares in `server.js`.
 
----
-**Nächste Schritte:** 
-* Implementierung des Sammel-Buttons im Stadtpark (`feature/bottle-collecting`).
-* Programmierung des Countdown-Timers für die 10-Minuten-Sperre.
-* Erstellung des Inventars für Plunderstücke (Zauberstab, Brille).
+## Womit beschäftige ich mich als Nächstes?
+* **Sammel-System:** Implementierung der Sammel-Logik im Frontend (Stadtpark-Komponente).
+* **Countdown-Timer:** Entwicklung eines visuellen Timers für die 10-Minuten-Wartesperre.
+* **Banden-Modul:** Aufbau der ersten Tabellen für das Clan/Banden-System.
