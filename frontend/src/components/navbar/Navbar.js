@@ -4,12 +4,15 @@ import { Button } from "../buttons/Button";
 import "./Navbar.css";
 import { useAuth } from "../../api/auth/AuthProvider";
 import Avatar from "@mui/material/Avatar";
-import axios from "axios";
+import axios from "axios"; // Neu für den API-Aufruf
 
 function Navbar() {
   const { user, handleLogout } = useAuth();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  
+  // Neuer State für die Live-Stats aus Aiven
+  const [pennerStats, setPennerStats] = useState({ money: "0.00", bottles: 0, points: 0 });
 
   // Neuer State für die Live-Stats aus Aiven
   const [pennerStats, setPennerStats] = useState({ money: "0.00", bottles: 0, points: 0 });
@@ -17,7 +20,7 @@ function Navbar() {
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
-  // Logik für den Button (Responsive)
+  // Bestehende Logik für den Button
   useEffect(() => {
     const showButton = () => {
       if (window.innerWidth <= 960) setButton(false);
@@ -28,27 +31,22 @@ function Navbar() {
     return () => window.removeEventListener("resize", showButton);
   }, []);
 
-  // NEU & KORRIGIERT: Lädt die echten Daten vom Backend Port 5001 mit /api
+  // NEU: Lädt die echten Daten vom Backend
   useEffect(() => {
     const fetchPennerData = async () => {
-      // Nur laden, wenn ein User eingeloggt ist UND eine ID hat
-      if (!user || !user.id) return; 
-
       try {
-        // Pfad auf /api korrigiert und userId als Query-Parameter angehängt
-        const response = await axios.get(`http://localhost:5001/api/user/navbar-stats?userId=${user.id}`);
+        const response = await axios.get("http://localhost:5001/user/navbar-stats");
         setPennerStats(response.data);
       } catch (err) {
-        console.error("Fehler beim Laden der Penner-Daten in Navbar:", err);
+        console.error("Fehler beim Laden der Penner-Daten:", err);
       }
     };
 
     fetchPennerData();
-    
-    // Intervall alle 30 Sekunden, um Geld/Flaschen aktuell zu halten
-    const interval = setInterval(fetchPennerData, 30000);
+    // Optional: Alle 60 Sek. aktualisieren
+    const interval = setInterval(fetchPennerData, 60000);
     return () => clearInterval(interval);
-  }, [user]); // Reagiert sofort, wenn 'user' sich nach dem Login ändert
+  }, []);
 
   return (
     <nav className="Navbar">
@@ -58,14 +56,12 @@ function Navbar() {
           <i className="fa-solid fa-skull-crossbones" style={{marginLeft: '10px'}}/>
         </Link>
 
-        {/* IN-GAME STATS (Jetzt mit Live-Daten und korrekter Euro-Anzeige) */}
+        {/* IN-GAME STATS (Jetzt mit Live-Daten statt statischem Text) */}
         {user && (
-          <div className="nav-ingame-stats" style={{ color: '#fff', display: 'flex', gap: '15px', alignItems: 'center' }}>
-            <span className="stat-money" style={{ color: '#2ecc71', fontWeight: 'bold' }}>
-              € {parseFloat(pennerStats.money).toFixed(2)}
-            </span>
-            <span className="stat-caps">🍾 {pennerStats.bottles} Flaschen</span>
-            <span className="stat-points" style={{ color: '#f1c40f' }}>🏆 {pennerStats.points} Pkt.</span>
+          <div className="nav-ingame-stats">
+            <span className="stat-money">€ {pennerStats.money}</span>
+            <span className="stat-caps">{pennerStats.bottles} Flaschen</span>
+            <span className="stat-points" style={{marginLeft: '10px', color: '#f1c40f'}}>{pennerStats.points} Pkt.</span>
           </div>
         )}
 
@@ -90,10 +86,10 @@ function Navbar() {
             <Button buttonStyle="btn--outline" path="/sign-in">LOGIN</Button>
           )}
           {user && (
-            <div className="nav-user-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Avatar
-                alt={user.username || "Penner"}
-                src="/pictures/penner01.png"
+            <div className="nav-user-info">
+              <Avatar 
+                alt={pennerStats.username || "Penner"} 
+                src="/pictures/hacker.png" 
                 sx={{ border: '2px solid #f1c40f', width: 35, height: 35 }}
               />
               {button && (
