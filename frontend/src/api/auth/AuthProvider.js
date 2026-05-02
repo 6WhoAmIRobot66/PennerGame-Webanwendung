@@ -1,6 +1,4 @@
-// Verwaltet die Authentifizierungszustände und -aktionen
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { login, register } from "../config/api"; // Importiert die API-Funktionen
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -12,48 +10,32 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Überprüfe beim Laden der App, ob der Benutzer bereits eingeloggt ist
-    // Wenn ein gespeichertes Token vorhanden ist, aktualisiere den Benutzerstatus
+    // WICHTIG: Beim Laden der Seite den User aus dem Speicher holen
+    const savedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    if (token) {
-      // Hier könntest du die Gültigkeit des Tokens überprüfen und den Benutzerstatus aktualisieren
+    if (savedUser && token) {
+      setUser(JSON.parse(savedUser));
     }
   }, []);
 
-  const handleLogin = async (credentials) => {
-    try {
-      const response = await login(credentials);
-      const token = response.token;
-      localStorage.setItem("token", token);
-      console.log("response bitte", response);
-      setUser(response.user);
-      localStorage.setItem("username", response.user.username);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Login error:", error);
-      // Handle login error
-    }
-  };
-
-  const signUp = async (userData) => {
-    try {
-      await register(userData);
-      // Optionally handle successful registration
-    } catch (error) {
-      console.error("Registration error:", error);
-      // Handle registration error
-    }
+  const handleLogin = (userData) => {
+    // Diese Funktion wird jetzt von unserer SignIn.js aufgerufen
+    // nachdem das Backend "OK" gesagt hat.
+    setUser(userData.user);
+    localStorage.setItem("token", userData.token);
+    localStorage.setItem("user", JSON.stringify(userData.user));
+    navigate("/dashboard");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
+    navigate("/login");
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, setUser, handleLogin, signUp, handleLogout }}
-    >
+    <AuthContext.Provider value={{ user, setUser, handleLogin, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

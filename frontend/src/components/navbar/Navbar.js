@@ -17,32 +17,38 @@ function Navbar() {
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
-  // Bestehende Logik für den Button
+  // Logik für den Button (Responsive)
   useEffect(() => {
     const showButton = () => {
       if (window.innerWidth <= 960) setButton(false);
       else setButton(true);
     };
     window.addEventListener("resize", showButton);
+    showButton(); // Initialer Check
     return () => window.removeEventListener("resize", showButton);
   }, []);
 
-  // NEU: Lädt die echten Daten vom Backend
+  // NEU & KORRIGIERT: Lädt die echten Daten vom Backend Port 5001 mit /api
   useEffect(() => {
     const fetchPennerData = async () => {
+      // Nur laden, wenn ein User eingeloggt ist UND eine ID hat
+      if (!user || !user.id) return; 
+
       try {
-        const response = await axios.get("http://localhost:5001/user/navbar-stats");
+        // Pfad auf /api korrigiert und userId als Query-Parameter angehängt
+        const response = await axios.get(`http://localhost:5001/api/user/navbar-stats?userId=${user.id}`);
         setPennerStats(response.data);
       } catch (err) {
-        console.error("Fehler beim Laden der Penner-Daten:", err);
+        console.error("Fehler beim Laden der Penner-Daten in Navbar:", err);
       }
     };
 
     fetchPennerData();
-    // Optional: Alle 60 Sek. aktualisieren
-    const interval = setInterval(fetchPennerData, 60000);
+    
+    // Intervall alle 30 Sekunden, um Geld/Flaschen aktuell zu halten
+    const interval = setInterval(fetchPennerData, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user]); // Reagiert sofort, wenn 'user' sich nach dem Login ändert
 
   return (
     <nav className="Navbar">
@@ -52,12 +58,14 @@ function Navbar() {
           <i className="fa-solid fa-skull-crossbones" style={{marginLeft: '10px'}}/>
         </Link>
 
-        {/* IN-GAME STATS (Jetzt mit Live-Daten statt statischem Text) */}
+        {/* IN-GAME STATS (Jetzt mit Live-Daten und korrekter Euro-Anzeige) */}
         {user && (
-          <div className="nav-ingame-stats">
-            <span className="stat-money">€ {pennerStats.money}</span>
-            <span className="stat-caps">{pennerStats.bottles} Flaschen</span>
-            <span className="stat-points" style={{marginLeft: '10px', color: '#f1c40f'}}>{pennerStats.points} Pkt.</span>
+          <div className="nav-ingame-stats" style={{ color: '#fff', display: 'flex', gap: '15px', alignItems: 'center' }}>
+            <span className="stat-money" style={{ color: '#2ecc71', fontWeight: 'bold' }}>
+              € {parseFloat(pennerStats.money).toFixed(2)}
+            </span>
+            <span className="stat-caps">🍾 {pennerStats.bottles} Flaschen</span>
+            <span className="stat-points" style={{ color: '#f1c40f' }}>🏆 {pennerStats.points} Pkt.</span>
           </div>
         )}
 
@@ -67,7 +75,7 @@ function Navbar() {
 
         <ul className={click ? "nav-menu active" : "nav-menu"}>
           <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={closeMobileMenu}>Übersicht</Link>
+            <Link to="/dashboard" className="nav-links" onClick={closeMobileMenu}>Übersicht</Link>
           </li>
           <li className="nav-item">
             <Link to="/banden" className="nav-links" onClick={closeMobileMenu}>Banden</Link>
@@ -82,14 +90,16 @@ function Navbar() {
             <Button buttonStyle="btn--outline" path="/sign-in">LOGIN</Button>
           )}
           {user && (
-            <div className="nav-user-info">
+            <div className="nav-user-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Avatar
-                alt={pennerStats.username || "Penner"}
+                alt={user.username || "Penner"}
                 src="/pictures/penner01.png"
                 sx={{ border: '2px solid #f1c40f', width: 35, height: 35 }}
               />
               {button && (
-                <button className="pg-logout-btn" onClick={handleLogout}>Logout</button>
+                <button className="pg-logout-btn" onClick={handleLogout} style={{ background: 'none', border: '1px solid #e74c3c', color: '#e74c3c', padding: '5px 10px', cursor: 'pointer', borderRadius: '4px' }}>
+                  Logout
+                </button>
               )}
             </div>
           )}
