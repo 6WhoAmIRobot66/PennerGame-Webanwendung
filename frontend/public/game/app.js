@@ -2,7 +2,7 @@ const app = new PIXI.Application();
 const bugList = [];
 document.body.appendChild(app.view);
 
-const hacker = PIXI.Sprite.from("assets/hacker.png");
+const hacker = PIXI.Sprite.from("assets/penner01.png");
 hacker.x = 350;
 hacker.y = 520;
 hacker.scale.x = 0.1;

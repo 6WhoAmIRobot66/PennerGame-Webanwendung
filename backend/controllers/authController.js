@@ -3,72 +3,90 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-// FIX: Fallback hinzugefügt, damit jwt.sign nicht abstürzt, wenn das Secret fehlt
 const jwtSecret = process.env.JWT_SECRET || "pennergame_fallback_secret_123";
 
+// ======================
+// REGISTER
+// ======================
 exports.registerUser = async (req, res) => {
-  console.log("--- REGISTRIERUNGS-VERSUCH ---", req.body);
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { username, email, password, penner_name } = req.body;
 
+    // Existenzprüfung
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ message: "Email bereits vergeben" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      username: firstName + lastName,
+      username: username || email.split('@')[0],
       email,
       password: hashedPassword,
+      penner_name: penner_name || username || "Penner_" + Date.now().toString().slice(-4),
+      
+      // PennerGame Startwerte
       money: 10.00,
-      max_money: 20.00,
-      bottles: 0,
-      dex: 1
+      att: 5,
+      def: 5,
+      dex: 5,
+      cleanliness: 100,
+      promille: 0,
+      level: 1,
+      exp: 0,
+      last_bottle_collect: null,
     });
 
     const token = jwt.sign(
       { userId: newUser.id, email: newUser.email },
-      jwtSecret
+      jwtSecret,
+      { expiresIn: '7d' }
     );
 
-    res.status(201).json({ message: "User registered successfully", token, user: newUser });
+    res.status(201).json({ 
+      message: "Registrierung erfolgreich", 
+      token, 
+      user: newUser 
+    });
+
   } catch (error) {
-    console.error("Error registering user:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Register Error:", error);
+    res.status(500).json({ message: "Serverfehler bei Registrierung" });
   }
 };
 
+// ======================
+// LOGIN
+// ======================
 exports.loginUser = async (req, res) => {
-  console.log("--- LOGIN-VERSUCH EMPFANGEN ---");
-  console.log("Daten vom Frontend:", req.body);
-
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
-
     if (!user) {
-      console.log("Login gescheitert: Email nicht gefunden ->", email);
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Falsche Zugangsdaten" });
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatch) {
-      console.log("Login gescheitert: Passwort falsch für ->", email);
-      return res.status(401).json({ message: "Invalid credentials" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Falsche Zugangsdaten" });
     }
 
-    // Erfolg: Token erstellen
-    const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret);
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      jwtSecret,
+      { expiresIn: '7d' }
+    );
 
-    console.log("LOGIN ERFOLGREICH für:", user.username);
+    res.json({ 
+      message: "Login erfolgreich", 
+      token, 
+      user 
+    });
 
-    res.json({ user, token });
   } catch (error) {
-    console.error("Error logging in user:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "Serverfehler beim Login" });
   }
 };

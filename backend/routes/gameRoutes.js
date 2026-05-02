@@ -1,8 +1,11 @@
-const express =require('express');
+const express = require('express');
 const router = express.Router();
 const gameController = require('../controllers/gameController');
-// const authenticateToken = require('../middleware/authenticateToken'); // Später aktivieren
 
-router.post('/collect', gameController.collectBottles);
+// Flaschen sammeln
+router.post('/collect-bottles', gameController.collectBottles);
+
+// Flaschen verkaufen (neu hinzugefügt)
+router.post('/sell-bottles', gameController.sellBottles);
 
 module.exports = router;

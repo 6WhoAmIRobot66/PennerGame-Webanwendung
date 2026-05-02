@@ -1,152 +1,60 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../api/auth/AuthProvider"; // Stelle sicher, dass du die useAuth-Hook importierst
-import "../../App.css";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import axios from "axios";
+import {
+  Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, createTheme, ThemeProvider
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const defaultTheme = createTheme();
 
 export function SignUp() {
   const navigate = useNavigate();
-  const { signUp } = useAuth();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    allowExtraEmails: false,
-  });
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value, checked } = e.target;
-    const val = name === "allowExtraEmails" ? checked : value;
-    setFormData({ ...formData, [name]: val });
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const payload = {
+      username: data.get("username"),
+      email: data.get("email"),
+      password: data.get("password"),
+      penner_name: data.get("penner_name")
+    };
+
     try {
-      await signUp(formData);
-      navigate("/");
-    } catch (error) {
-      console.error("Registrierung fehlgeschlagen:", error);
+      // FESTEINSTELLUNG: PORT 5001
+      await axios.post("http://localhost:5001/api/auth/register", payload);
+      alert("Registrierung erfolgreich! Ab zum Login.");
+      navigate("/login");
+    } catch (err) {
+      console.error("Registrierungs-Fehler:", err.response?.data);
+      setError(err.response?.data?.message || "Fehler beim Registrieren (Port 5001)");
     }
   };
 
   return (
-    <ThemeProvider theme={createTheme()}>
+    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+        <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}><LockOutlinedIcon /></Avatar>
+          <Typography component="h1" variant="h5">Neuer Penner</Typography>
+          {error && <Typography color="error" variant="body2" sx={{ mt: 2 }}>{error}</Typography>}
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Vorname"
-                  autoFocus
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Nachname"
-                  name="lastName"
-                  autoComplete="family-name"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Addresse"
-                  name="email"
-                  autoComplete="email"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Passwort"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="allowExtraEmails"
-                      color="primary"
-                      onChange={handleChange}
-                    />
-                  }
-                  label="Ich würde gerne permanent genervt werden mit unnötigen Mails & akzeptiere diverse AGB's."
-                />
-              </Grid>
+              <Grid item xs={12}><TextField name="username" required fullWidth label="Benutzername" /></Grid>
+              <Grid item xs={12}><TextField name="penner_name" required fullWidth label="Name deines Penners" /></Grid>
+              <Grid item xs={12}><TextField name="email" required fullWidth label="Email Adresse" /></Grid>
+              <Grid item xs={12}><TextField name="password" required fullWidth label="Passwort" type="password" /></Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/sign-in" variant="body2">
-                  Account bereits vorhanden? Sign-in
-                </Link>
-              </Grid>
-            </Grid>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>Registrieren</Button>
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
   );
 }
-
 export default SignUp;

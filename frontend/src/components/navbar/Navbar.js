@@ -14,6 +14,9 @@ function Navbar() {
   // Neuer State für die Live-Stats aus Aiven
   const [pennerStats, setPennerStats] = useState({ money: "0.00", bottles: 0, points: 0 });
 
+  // Neuer State für die Live-Stats aus Aiven
+  const [pennerStats, setPennerStats] = useState({ money: "0.00", bottles: 0, points: 0 });
+
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
@@ -24,6 +27,7 @@ function Navbar() {
       else setButton(true);
     };
     window.addEventListener("resize", showButton);
+    showButton(); // Initialer Check
     return () => window.removeEventListener("resize", showButton);
   }, []);
 
@@ -67,7 +71,7 @@ function Navbar() {
 
         <ul className={click ? "nav-menu active" : "nav-menu"}>
           <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={closeMobileMenu}>Übersicht</Link>
+            <Link to="/dashboard" className="nav-links" onClick={closeMobileMenu}>Übersicht</Link>
           </li>
           <li className="nav-item">
             <Link to="/banden" className="nav-links" onClick={closeMobileMenu}>Banden</Link>
@@ -89,7 +93,9 @@ function Navbar() {
                 sx={{ border: '2px solid #f1c40f', width: 35, height: 35 }}
               />
               {button && (
-                <button className="pg-logout-btn" onClick={handleLogout}>Logout</button>
+                <button className="pg-logout-btn" onClick={handleLogout} style={{ background: 'none', border: '1px solid #e74c3c', color: '#e74c3c', padding: '5px 10px', cursor: 'pointer', borderRadius: '4px' }}>
+                  Logout
+                </button>
               )}
             </div>
           )}

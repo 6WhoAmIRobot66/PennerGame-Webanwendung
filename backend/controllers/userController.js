@@ -37,14 +37,23 @@ const subtractPoints = async (req, res) => {
   }
 };
 
-// --- NEUE PENNERGAME LOGIK FÜR DIE NAVBAR ---
+// --- NEUE DYNAMISCHE PENNERGAME LOGIK FÜR DIE NAVBAR ---
 const getNavbarData = async (req, res) => {
   try {
-    // Wir holen fest den ersten User (ID 1) für die Anzeige
-    const user = await User.findByPk(1); 
-    if (!user) {
-      return res.status(404).json({ message: "TestPenner nicht gefunden" });
+    // Wir nehmen die ID aus dem Query-Parameter (?userId=X)
+    const userId = req.query.userId; 
+
+    if (!userId) {
+      return res.status(400).json({ message: "Keine User-ID übermittelt" });
     }
+
+    const user = await User.findByPk(userId); 
+    
+    if (!user) {
+      return res.status(404).json({ message: "Penner nicht gefunden" });
+    }
+
+    // Antwortet mit den echten Werten aus der Datenbank
     res.json({
       username: user.username,
       money: user.money,
@@ -52,6 +61,7 @@ const getNavbarData = async (req, res) => {
       points: user.points
     });
   } catch (error) {
+    console.error("Fehler in getNavbarData:", error);
     res.status(500).json({ message: "Fehler beim Laden der Navbar-Daten" });
   }
 };
@@ -60,5 +70,5 @@ const getNavbarData = async (req, res) => {
 module.exports = {
   addPoints,
   subtractPoints,
-  getNavbarData, // Neu hinzugefügt
+  getNavbarData, 
 };
